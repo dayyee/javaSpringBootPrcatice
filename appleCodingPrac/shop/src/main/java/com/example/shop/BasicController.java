@@ -42,7 +42,7 @@ public class BasicController {
     @GetMapping("/mypage")
     String mypage(){
         // html 파일 경로 적기
-        // resources/statica이 기본 경로로 잡혀있음.
+        // resources/static이 기본 경로로 잡혀있음.
         return "index.html";
     }
 

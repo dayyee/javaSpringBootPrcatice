@@ -23,53 +23,24 @@ DB 데이터 출력하려면
 @RequiredArgsConstructor // + lombok 문법(2번 단계)
 public class ItemController {
 
-    // 2. 원하는 클래스에 repository 등록
-
     private final ItemRepository itemRepository;
 
     @GetMapping("/list")
     String list(Model model){
-        // 3. repository.입출력문법()쓰기
-        // List 타입으로 갖고 오니까 List로 해주고,
-        // <Item>은 출력중인 테이블 클래스(Entity만든거 생각)를 넣어야하기에..
+
         List<Item> result = itemRepository.findAll(); // list형으로 갖고옴.
+        model.addAttribute("items", result);
 
-        // 출력값 : [com.example.shop.Item@31a41ba0, com.example.shop.Item@5e10fde0, com.example.shop.Item@309cb571]
-        System.out.println(result);
-
-        // 첫번째 자료 뽑기. 근데 item 오프젝트에서 뽑은 로우 데이터만 나옴 : com.example.shop.Item@31a41ba0
-        System.out.println(result.get(0));
-        // 첫 번째 자료의 price 뽑기 : 7000
-        System.out.println(result.get(0).price);
+        var a = new Item();
+        System.out.println(a.toString()); // Item(id=null, title=null, price=null)
+        // Item.java에 @ToString 등록하고,
+        // 이렇게하면 object의 값만 뽑을 수 있음.
 
 
-        // 여러 데이터 한 변수에 넣으려면(Array List형 선언)
-        List<Integer> a = new ArrayList<>();
-        a.add(30);
-        a.add(40);
-        System.out.println(a); // [30, 40]
-        // a라는 array list의 index 0번째의 데이터 출력
-        System.out.println(a.get(0)); // [30]
-
-        // 좀 더 명확하게 ArrayList의 타입을 정확히 기재하려면
-        ArrayList<Integer> b = new ArrayList<>(); // <> 안은 데이터의 타입
-        List<Object> c = new ArrayList<>(); // List가 좀 더 큰 개념이라.. 저렇게도함. + Object는 여러종류의 데이터의 타입을 동시에 사용하고 싶을 때
-
-
-        model.addAttribute("name","홍길동");
         return "list.html";
 
-        /* 참고 > 롬복 문법(@RequiredArgsConstructor) 안쓰고 싶으면
-        itemRepository의 constructor 만들어야함.
 
-                                    ⬇️ new ItemRepository() 들어있고
-        private final ItemRepository itemRepository;
-        @Autowired
-        public ItemController(ItemRepository itemRepository) {
-            this.itemRepository = itemRepository;
-            ⬆️  new ItemRepository() 하나 뽑아서
-            itemRepository 변수에 넣으라고 시키는 중...
-        }
-         */
+
+
     }
 }
