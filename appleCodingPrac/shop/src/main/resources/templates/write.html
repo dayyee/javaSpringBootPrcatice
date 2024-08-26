@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--<link href=”/main.css” rel=”stylesheet”>-->
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
+.nav {
+display: flex;
+padding: 10px;
+align-items: center;
+font-family : 'Montserrat';
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
+.nav a {
+margin-right: 10px;
+text-decoration : none;
+font-weight : 400;
+letter-spacing : -0.5px;
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
+.nav .logo {
+font-weight : 800;
+}
+input, button {
+ padding : 8px 13px;
+ margin-top : 5px;
+ border : 1px solid grey;
+ border-radius : 4px;
+ vertical-align : middle;
+}
+button {
+ background : black;
+ color : white;
+ border : none;
+}
+input {
+ display : block;
+}
+    </style>
+
+</head>
+<body>
+<div th:replace="~{nav.html::navbar}"></div>
+<form action="/add" method="POST">
+    <!--누가 /add로 POST요청하면 이거저거해주세요 뜻, 관련한건 서버(Controller)에 적어야함-->
+    <input name="title">
+    <input name="price">
+    <button type="submit">전송</button>
+</form>
+</body>
+</html>

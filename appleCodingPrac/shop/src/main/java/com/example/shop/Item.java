@@ -1,27 +1,34 @@
 package com.example.shop;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @Entity
+@Getter
+@Setter
 public class Item {
-    // 변수에 public 붙이면 다른 모든 클래스에서 문제 없이 사용 가능.
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    // @Column()으로 컬럼에 제약 설정 가능
-    // 후에 이거 추가한다고 테이블 내용을 바꿔주지 않음. 그렇기에 드랍하고 만들어야함~
-    // @Column(nullable = false, unique = true)
-    public String title; //컬럼
-    public Integer price;
 
-    // object의 변수들 한번에 출력하는 법
-//    public String toString() {
-//        return this.title + this.price;
-//    }
+    private String title;
+    private Integer price;
 
-    // lombok 라이브러리 도움 받기
-    // item.java에 -> @ToString 사용하기
+    /* lombok의 @Getter
+    -> 컬럼 위에 붙여주면 아래 함수가 알아서 내부적으로 만들어주는것
+    -> 아니면 전체 클래스에 붙여도 가능, Setter도 동일
+    public String getTitle(){
+        return title;
+    }
+
+    @Setter : 변수들의 api 만드는 곳 _ 이걸 가져다쓰는 사람은 내부 로직 신경안써도된다.
+    -> 컬럼 위에 붙여주면 아래 함수가 알아서 내부적으로 만들어주는것
+    public void setTitle(String title){
+        if 255자 이하면 title에 저장해주세요~ 같은 로직 추가 가능->안정성 올리기
+        this.title=title;
+    }
+*/
 }
