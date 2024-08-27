@@ -7,59 +7,91 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
-/*
-DB 데이터 출력하려면
-1. Repository 만들기(interface)
-2. Repository 등록하기(사용하려고하는 class에)
-3. repository.입출력문법() 쓰기
- */
 
 @Controller
-@RequiredArgsConstructor // + lombok 문법(2번 단계)
+// @RequiredArgsConstructor // + lombok 문법(2번 단계)
 public class ItemController {
+    // object 알아서 뽑아서            ⬇️여기 넣어달라는 뜻..
+    private final ItemRepository itemRepository; // 그래서 new itemRepository() 가 들어있는 것..
+    private final ItemService itemService; // + 롬복 @RequiredArgsConstructor해야하고, 안하면 아래 @Autowired 포함한 코드 넣어야함..
 
-    private final ItemRepository itemRepository;
+    // 롬복 @RequiredArgsConstructor 안쓰면 아래 코드..
+    @Autowired
+    public ItemController(ItemRepository itemRepository, ItemService itemService) {
+        this.itemRepository = itemRepository;
+        this.itemService = itemService;
+    }
+
+    // 이런식으로 new 키워드로 소스 코드 안에서 오브젝트 직접 사용하는게 아니라
+    // 다른 곳에서 오브젝트 뽑은다음에 다른 곳에서 변수로 가져다 쓰는 것을
+    // Dependency Injection 이라고 함.
+    // 사용 이유?
+    // 1. object 여러개 안뽑아도 되어서 효율적
+    // 2. 클래스간의 커플링 줄일 수 있음.
+    //    (다른 클래스에서 new키워드로 오브젝트 뽑아서 쓰면, 커플링 생김.. 나중에 오브젝트에서 변경 생기면 관리 나중에 힘들어짐..)
+
+
 
     @GetMapping("/list")
     String list(Model model) {
 
-        List<Item> result = itemRepository.findAll(); // list형으로 갖고옴.
+        List<Item> result = itemService.findAllItems(); // list형으로 갖고옴.
         model.addAttribute("items", result);
 
         return "list.html";
     }
 
-        // var a = new Item();
-        // System.out.println(a.toString()); // Item(id=null, title=null, price=null)
-        // Item.java에 @ToString 등록하고,
-        // 이렇게하면 object의 값만 뽑을 수 있음.
 
-
-        // 🌟 상품 추가 기능
-        // 1. 상품 이름, 가격 작성 할 수 있는 페이지와 폼
-        // 2. 전송 버튼 누르면 서버로 보냄
-        // 3. 서버는 검사 후 이상 없으면 DB 저장
-
-//    @GetMapping("/write")
-//    String write(){
-//        return "write.html";
-//    }
-    // Map 자료형 쓰기 : input이 100개면? 파라미터에 하나하나 값 쓰고 있을 수 없음.
-    // Map 자료형은? {}로 시작하고 여러 데이터 한 변수에 넣고 싶을 때 사용. list와 비슷하다.
     @PostMapping("/add")
     // String addPost(@RequestParam String title, @RequestParam Integer price){
-    String addPost(@ModelAttribute Item item){
-        // Item item = new Item();
-        // item.setTitle(title);
-        // item.setPrice(price);
+    String addPost(String title, Integer price) throws Exception {
         // -> @ModelAttribute Item item하면 -> input데이터들을 바로 item 오브젝트로 변환해준다.
         // 이거 사용 시에는 setter 생략 가능
-        System.out.println(item);
-        itemRepository.save(item);
+        // System.out.println(item);
+//         Item item = new Item();
+//         item.setTitle(title);
+//         item.setPrice(price);
+//         itemRepository.save(item);
 
+        // 다른 class의 함수를 사용할 때
+        // (X) new itemService().saveItem(String title, Integer price);
+        // 오브젝트 100번이면 100번 뽑아야함..
+        // 그니까 다른데서 미리 new Class()해놓고 재사용하는게 좋다. <- 스프링한테 시키자..
+        // 1. new Class()할 클래스에 @Service or @Repository or @Component 붙이기
+        // 2. 사용할 곳에서 변수로 등록하기. private final~
+        // 3. 변수 사용
+
+        itemService.saveItem(title, price);
         return "redirect:/list";
+    }
+
+    @GetMapping("/write")
+    String write(){
+        return "write.html";
+    }
+
+    // edit-post
+    @PostMapping("/edit")
+    String updatePost(Long id, String title, Integer price) throws Exception {
+        // 1. 먼저 id를 통해 받아온 title과 price를 화면단에 넣어줘야함.
+        // 2. 그거 가지고 수정해서 다시 데이터 받아서 화면에 뿌려주기
+        // 3, list로 redirect 하기
+        itemService.updateItem(id, title, price);
+        return "redirect:/list";
+
+    }
+    // edit-get
+    @GetMapping("/edit/{id}")
+    String modify(@PathVariable Long id, Model model){
+        Optional<Item> result = itemService.findItemById(id);
+        if(result.isPresent()){
+            model.addAttribute("itemInfo", result.get());
+            return "edit.html";
+        }
+        return "error.html";
     }
     /*
     일반으로 쓰기
@@ -78,15 +110,22 @@ public class ItemController {
     // URL 파라미터 문법 쓰기
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model) { // @PathVariable paramType paramName : id값 가져오기.
-                    Optional<Item> result = itemRepository.findById(id);
+
+        Optional<Item> result = itemService.findItemById(id);
 
             if(result.isPresent()) {
                 model.addAttribute("itemDetail", result.get());
                 return "detail.html";
             }else {
-                return "error.html";
+                // return "error.html";
                 // error페이지 넣어도되고.. redirect:/list 해도되고
+                return "";
             }
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handler(){
+        return ResponseEntity.status(400).body("다시 입력해요");
     }
     }
 
