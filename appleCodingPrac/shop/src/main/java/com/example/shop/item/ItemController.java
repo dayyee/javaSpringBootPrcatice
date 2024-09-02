@@ -1,13 +1,11 @@
-package com.example.shop;
+package com.example.shop.item;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 
@@ -121,6 +119,14 @@ public class ItemController {
                 // error페이지 넣어도되고.. redirect:/list 해도되고
                 return "";
             }
+    }
+
+    // 삭제 controller
+    @DeleteMapping("/item")
+    ResponseEntity<String> removeItem(@RequestParam Long id){ // Long id 이렇게 받을 수는 없다. 오브젝트 타입으로 ajax(js)에서 보내주니까
+        // System.out.println(body); {id=1, title=null, price=null}
+        itemService.deleteItemById(id);
+        return ResponseEntity.status(200).body("삭제완료");
     }
 
     @ExceptionHandler(Exception.class)

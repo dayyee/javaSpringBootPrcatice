@@ -9,14 +9,12 @@
      align-items: center;
      font-family : 'Montserrat';
     }
-     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
     .nav a {
      margin-right: 10px;
      text-decoration : none;
      font-weight : 400;
      letter-spacing : -0.5px;
     }
-     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
     .nav .logo {
      font-weight : 800;
     }
@@ -47,7 +45,21 @@
         <a th:href="@{'/detail/'+${i.id}}">링크</a>
         <p th:text="${i.price}"></p>
         <a th:href="@{'/edit/'+${i.id}}">✏️</a>
+        <p><button th:onclick="removeFunc([[${i.id}]])">🗑️</button></p>
     </div>
 </div>
+
+<script>
+    function removeFunc(ID) {
+        fetch(`/item?id=${ID}`, {method: 'DELETE'}) // 뒤에 .then 두개 쓰기
+        .then(res => res.text()) // 1. 서버에서 바디값으로 응답해주는 텍스트 가져오기 또는 json가져오기(res.json())
+        // 아님 status의 코드를 출력할 수도 있음. (필요할 때 찾아보기)
+        .then(text => { // ajax 요청 완료 후 실행할 함수
+            window.alert(text);
+            window.location.reload();
+        })
+    }
+</script>
 </body>
 </html>
+`

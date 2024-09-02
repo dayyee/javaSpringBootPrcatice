@@ -1,13 +1,10 @@
-package com.example.shop;
+package com.example.shop.item;
 
 // 이거저거 검사하거나 DB 입출력하거나 => 비즈니스 로직 : 이걸 담아두는 클래스는 Service
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,5 +59,14 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    // 삭제 service
+    public void deleteItemById(Long id){
+        if(itemRepository.existsById(id)){
+            itemRepository.deleteById(id);
+        }
+        else {
+            throw new IllegalArgumentException("Item with Id " + id + " does not exist.");
+        }
+    }
 
 }
