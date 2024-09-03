@@ -12,4 +12,6 @@ public interface UserMapper {
 
     @Select("SELECT * FROM user")
     List<User> findAll();
+
+    // Mapper 작성
 }
