@@ -18,7 +18,7 @@ public class UserService {
         return userMapper.findAll();
     }
 
-    public List<User> findUserById(Integer id, Map<String, Object>formData){
-        return userMapper.findUserById();
+    public List<User> findUserById(Integer id){
+        return userMapper.findUserById(id);
     }
 }

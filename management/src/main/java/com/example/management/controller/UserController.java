@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins="http://localhost:8090")
 @RequiredArgsConstructor
@@ -21,14 +22,20 @@ public class UserController {
     }
     */
 
+    // 사용자 전체 조회
     @GetMapping("/all")
     public List<User> findAllUsers(){
         return userService.findAllUsers();
     }
 
-    @PostMapping("/{id}")
-    public List<User> findUserById(@PathVariable Integer id, @RequestParam Map<String, Obejct> formData){
-        return userService.findUserById(id, formData);
+    // id로 사용자 조회
+    @GetMapping("/{id}")
+    public List<User> findUserById(@PathVariable Integer id){
+    return userService.findUserById(id);
     }
+//    @PostMapping("/{id}")
+//    public List<User> findUserById(@PathVariable Integer id, @RequestParam Map<String, Object> formData){
+//        return userService.findUserById(id, formData);
+//    }
 
 }
