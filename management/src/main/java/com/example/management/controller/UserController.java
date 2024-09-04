@@ -30,12 +30,12 @@ public class UserController {
 
     // id로 사용자 조회
     @GetMapping("/{id}")
-    public List<User> findUserById(@PathVariable Integer id){
+    public List<User> findUserById(@PathVariable("id") Integer id){
     return userService.findUserById(id);
     }
-//    @PostMapping("/{id}")
-//    public List<User> findUserById(@PathVariable Integer id, @RequestParam Map<String, Object> formData){
-//        return userService.findUserById(id, formData);
-//    }
+    @PutMapping("/{id}")
+    public void updateUserById(@PathVariable("id") Integer id, @RequestBody Map<String, Object> formData){
+        userService.updateUserById(id, formData);
+    }
 
 }

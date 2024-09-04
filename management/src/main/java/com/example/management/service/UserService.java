@@ -5,6 +5,7 @@ import com.example.management.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -20,5 +21,9 @@ public class UserService {
 
     public List<User> findUserById(Integer id){
         return userMapper.findUserById(id);
+    }
+
+    public void updateUserById(Integer id, Map<String, Object>formData){
+        userMapper.updateUserById(id, formData);
     }
 }
