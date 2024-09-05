@@ -7,10 +7,10 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class User {
-private int id;
+public class UserDTO {
+private Integer id;
 private String name;
-private int age;
+private Integer age;
 private String email;
 private String phoneNum;
 }

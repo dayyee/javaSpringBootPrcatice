@@ -1,11 +1,11 @@
 package com.example.management.service;
 
 import com.example.management.UserMapper;
-import com.example.management.model.User;
+import com.example.management.model.SubjectDTO;
+import com.example.management.model.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
@@ -15,16 +15,18 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public List<User> findAllUsers(){
+    public List<UserDTO> findAllUsers(){
         return userMapper.findAll();
     }
 
-    public List<User> findUserById(Integer id){
+    public UserDTO findUserById(Integer id){
         return userMapper.findUserById(id);
     }
 
-    public void updateUserById(Integer id, Map<String, Object>formData){
-        userMapper.updateUserById(id, formData);
+    public SubjectDTO findSubjectById(Integer id){
+        return userMapper.findSubjectById(id);
     }
-    "확인테스트"
+    public Integer updateUserById(UserDTO formData){
+        return userMapper.updateUserById(formData);
+    }
 }

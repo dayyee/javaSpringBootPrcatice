@@ -1,13 +1,14 @@
 package com.example.management.controller;
 
 
-import com.example.management.model.User;
+import com.example.management.model.SubjectDTO;
+import com.example.management.model.UserDTO;
 import com.example.management.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins="http://localhost:8090")
 @RequiredArgsConstructor
@@ -18,24 +19,35 @@ public class UserController {
 
     /* constructor
     public UserController(UserService userService){
-        this.userService = userService;ㅃQㅃ
+        this.userService = userService;
     }
     */
 
     // 사용자 전체 조회
     @GetMapping("/all")
-    public List<User> findAllUsers(){
+    public List<UserDTO> findAllUsers(){
         return userService.findAllUsers();
     }
 
     // id로 사용자 조회
     @GetMapping("/{id}")
-    public List<User> findUserById(@PathVariable("id") Integer id){
+    public UserDTO findUserById(@PathVariable("id") Integer id){
     return userService.findUserById(id);
     }
-    @PutMapping("/{id}")
-    public void updateUserById(@PathVariable("id") Integer id, @RequestBody Map<String, Object> formData){
-        userService.updateUserById(id, formData);
+
+    // id로 subject table까지 조회
+    @GetMapping("/detail/{id}")
+    public SubjectDTO findSubjectById(@PathVariable("id") Integer id){
+        return userService.findSubjectById(id);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUserById(@PathVariable("id") Integer id, @RequestBody UserDTO formData) {
+        Integer updateCnt = userService.updateUserById(formData);
+        if (updateCnt > 0) {
+            return ResponseEntity.ok("사용자 정보가 수정되었습니다.");
+        } else {
+            return ResponseEntity.status(404).body("사용자 정보가 없습니다.");
+        }
+    }
 }

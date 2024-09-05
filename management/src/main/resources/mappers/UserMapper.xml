@@ -5,16 +5,24 @@
 
 <mapper namespace="com.example.management">
 
-    <select id="findAll" resultType="User">
+    <select id="findAll" resultType="UserDTO">
         SELECT * FROM user
     </select>
 
-    <select id="findUserById" parameterType="int" resultType="User">
+    <select id="findUserById" parameterType="int" resultType="UserDTO">
         SELECT * FROM user WHERE id=#{id}
     </select>
 
-    <update id="updateUserById" parameterType="map">
-        UPDATE user set name=#{formData.name}, age=#{formData.age}, email=#{formData.email}, phoneNum=#{formData.phoneNum} WHERE id=#{id}
+    <select id="findSubjectById" parameterType="int" resultType="SubjectDTO">
+        SELECT user.id, user.name, subject.code, subject.title
+        FROM user
+        INNER JOIN subject
+        ON subject.code=user.subject_code
+        WHERE user.id=#{id}
+    </select>
+
+    <update id="updateUserById" parameterType="UserDTO" >
+        UPDATE user set name=#{formData.name}, age=#{formData.age}, email=#{formData.email}, phoneNum=#{formData.phoneNum} WHERE id=#{formData.id}
     </update>
 
 </mapper>
