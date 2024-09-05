@@ -41,6 +41,7 @@ public class UserController {
         return userService.findSubjectById(id);
     }
 
+    // id로 사용자 수정
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUserById(@PathVariable("id") Integer id, @RequestBody UserDTO formData) {
         Integer updateCnt = userService.updateUserById(formData);
