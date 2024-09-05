@@ -24,18 +24,19 @@ public class UserController {
 
     // 사용자 전체 조회
     @GetMapping("/all")
-    public List<User> findAllUsers(){
+    public User findAllUsers(){
         return userService.findAllUsers();
     }
 
     // id로 사용자 조회
     @GetMapping("/{id}")
-    public List<User> findUserById(@PathVariable("id") Integer id){
+    public User findUserById(@PathVariable Integer id){
     return userService.findUserById(id);
     }
-    @PutMapping("/{id}")
-    public void updateUserById(@PathVariable("id") Integer id, @RequestBody Map<String, Object> formData){
-        userService.updateUserById(id, formData);
+
+    @PostMapping("/{id}")
+    public String updateUserById(@PathVariable Integer id, @RequestParam User formData){
+        return userService.findUserById(id, formData);
     }
 
 }

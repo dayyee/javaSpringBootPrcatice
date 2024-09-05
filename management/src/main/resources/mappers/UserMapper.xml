@@ -12,9 +12,4 @@
     <select id="findUserById" parameterType="int" resultType="User">
         SELECT * FROM user WHERE id=#{id}
     </select>
-
-    <update id="updateUserById" parameterType="map">
-        UPDATE user set name=#{formData.name}, age=#{formData.age}, email=#{formData.email}, phoneNum=#{formData.phoneNum} WHERE id=#{id}
-    </update>
-
 </mapper>

@@ -15,16 +15,13 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public List<User> findAllUsers(){
+    public User findAllUsers(){
         return userMapper.findAll();
     }
 
-    public List<User> findUserById(Integer id){
+    public User findUserById(Integer id){
         return userMapper.findUserById(id);
     }
 
-    public void updateUserById(Integer id, Map<String, Object>formData){
-        userMapper.updateUserById(id, formData);
-    }
-    "확인테스트"
+    public String find
 }
