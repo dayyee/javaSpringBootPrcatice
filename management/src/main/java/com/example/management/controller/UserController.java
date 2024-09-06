@@ -1,6 +1,7 @@
 package com.example.management.controller;
 
 
+import com.example.management.aws.AwsSqsService;
 import com.example.management.model.SubjectDTO;
 import com.example.management.model.UserDTO;
 import com.example.management.service.UserService;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final AwsSqsService awsSqsService;
 
     /* constructor
     public UserController(UserService userService){
@@ -50,5 +52,12 @@ public class UserController {
         } else {
             return ResponseEntity.status(404).body("사용자 정보가 없습니다.");
         }
+    }
+
+    // SQS test
+    @PostMapping("/message")
+    public void sendMessage(@RequestBody String message){
+        awsSqsService.sendMessage(message);
+        awsSqsService.receiveAndSendToSNS();
     }
 }
