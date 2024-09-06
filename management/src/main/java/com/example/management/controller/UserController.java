@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
-    private final AwsSqsService awsSqsService;
 
     /* constructor
     public UserController(UserService userService){
@@ -54,10 +53,14 @@ public class UserController {
         }
     }
 
-    // SQS test
-    @PostMapping("/message")
-    public void sendMessage(@RequestBody String message){
-        awsSqsService.sendMessage(message);
-        awsSqsService.receiveAndSendToSNS();
+    // id로 사용자 삭제 후 메시징 처리
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removeUserById(@PathVariable("id") Integer id){
+        Integer removeCnt = userService.removeUserById(id);
+        if(removeCnt > 0){
+            return ResponseEntity.ok("사용자 정보가 삭제되었습니다.");
+        } else {
+            return ResponseEntity.status(404).body("사용자 정보가 없습니다.");
+        }
     }
 }

@@ -25,4 +25,7 @@
         UPDATE user set name=#{formData.name}, age=#{formData.age}, email=#{formData.email}, phoneNum=#{formData.phoneNum} WHERE id=#{formData.id}
     </update>
 
+    <delete id="removeUserById" parameterType="int">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
 </mapper>
