@@ -19,41 +19,48 @@ public class UserService {
     private final UserMapper userMapper;
     private final AwsSqsService awsSqsService;
 
-    public UserService(UserMapper userMapper, AwsSqsService awsSqsService){
-        this.userMapper=userMapper;
-        this.awsSqsService=awsSqsService;
+    public UserService(UserMapper userMapper, AwsSqsService awsSqsService) {
+        this.userMapper = userMapper;
+        this.awsSqsService = awsSqsService;
     }
 
-    public List<UserDTO> findAllUsers(){
+    public List<UserDTO> findAllUsers() {
         return userMapper.findAll();
     }
 
-    public UserDTO findUserById(Integer id){
+    public UserDTO findUserById(Integer id) {
         return userMapper.findUserById(id);
     }
 
-    public SubjectDTO findSubjectById(Integer id){
+    public SubjectDTO findSubjectById(Integer id) {
         return userMapper.findSubjectById(id);
     }
 
-    public Integer updateUserById(UserDTO formData){
+    public Integer updateUserById(UserDTO formData) {
         return userMapper.updateUserById(formData);
     }
 
     public Integer removeUserById(Integer id) {
-        UserDTO userDTO= userMapper.findUserById(id);
+        UserDTO userDTO = userMapper.findUserById(id);
 
-        if(userDTO == null){
+        if (userDTO == null) {
             return 0;
         }
 
         Integer result = userMapper.removeUserById(id);
 
-        if(result > 0){
+        if (result > 0) {
             awsSqsService.sendMessage(userDTO);
         }
 
         return result;
     }
 
+    public UserDTO findDataByKeyWord(Integer id, String name) {
+        // 둘다 null이면 에러
+            if(id == null && name == null){
+                throw new RuntimeException("입력 값이 없습니다.");
+            }
+        return userMapper.findDataByKeyWord(id, name);
+    }
 }

@@ -6,11 +6,11 @@
 <mapper namespace="com.example.management">
 
     <select id="findAll" resultType="UserDTO">
-        SELECT * FROM user
+        SELECT id, name, age, email, phoneNum FROM user
     </select>
 
     <select id="findUserById" parameterType="int" resultType="UserDTO">
-        SELECT * FROM user WHERE id=#{id}
+        SELECT id, name, age, email, phoneNum FROM user WHERE id=#{id}
     </select>
 
     <select id="findSubjectById" parameterType="int" resultType="SubjectDTO">
@@ -19,6 +19,10 @@
         INNER JOIN subject
         ON subject.code=user.subject_code
         WHERE user.id=#{id}
+    </select>
+
+    <select id="findDataByKeyWord" parameterType="map" resultType="UserDTO">
+        SELECT id, name, age, email, phoneNum FROM user WHERE id=#{id} OR name=#{name}
     </select>
 
     <update id="updateUserById" parameterType="UserDTO" >

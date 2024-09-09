@@ -9,10 +9,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT * FROM user")
+    @Select("SELECT id, name, age, email, phoneNum FROM user")
     List<UserDTO> findAll();
 
-    @Select("SELECT * FROM user WHERE id=#{id}")
+    @Select("SELECT id, name, age, email, phoneNum FROM user WHERE id=#{id}")
     UserDTO findUserById(Integer id);
 
     @Select("SELECT user.id, user.name, subject.code, subject.title FROM user INNER JOIN subject ON subject.code=user.subject_code WHERE user.id=#{id}")
@@ -23,5 +23,8 @@ public interface UserMapper {
 
     @Delete("DELETE FROM user WHERE id=#{id}")
     Integer removeUserById(Integer id);
+
+    @Select("SELECT id, name, age, email, phoneNum FROM user WHERE id=#{id} OR name=#{name}")
+    UserDTO findDataByKeyWord(@Param("id") Integer id, @Param("name") String name);
 
 }

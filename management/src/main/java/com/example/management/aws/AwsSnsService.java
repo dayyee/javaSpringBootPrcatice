@@ -11,13 +11,13 @@ import java.util.concurrent.CompletableFuture;
 public class AwsSnsService {
     private final SnsClient snsClient;
 
-    @Value("${aws.sns.topic.arn}")
-    private String snsTopicArn;
-
     // config 있어야 주입 가능. 없으면 연결하는것부터 다 적어줘야함.
     public AwsSnsService(SnsClient snsClient) {
         this.snsClient = snsClient;
     }
+
+    @Value("${aws.sns.topic.arn}")
+    private String snsTopicArn;
 
     // SNS 주제에 메시지를 발행하여 이메일 전송
     public CompletableFuture<Void> sendNotification(String message) {

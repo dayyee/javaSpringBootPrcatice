@@ -1,13 +1,16 @@
 package com.example.management.controller;
 
 
+import com.example.management.aws.AwsS3Service;
 import com.example.management.aws.AwsSqsService;
 import com.example.management.model.SubjectDTO;
 import com.example.management.model.UserDTO;
 import com.example.management.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final AwsS3Service awsS3Service;
 
     /* constructor
     public UserController(UserService userService){
@@ -62,5 +66,17 @@ public class UserController {
         } else {
             return ResponseEntity.status(404).body("사용자 정보가 없습니다.");
         }
+    }
+
+    // id, 이름으로 조회
+    @GetMapping("/search")
+    public UserDTO findDataByKeyword(@RequestParam(value="id", required = false) Integer id, @RequestParam(value="name", required = false) String name){
+        return userService.findDataByKeyWord(id, name);
+    }
+
+    // test s3
+    @GetMapping("/s3")
+    public void listBuckets(){
+        awsS3Service.listBucketObjects();
     }
 }
