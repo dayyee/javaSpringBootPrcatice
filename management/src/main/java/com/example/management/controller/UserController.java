@@ -64,7 +64,7 @@ public class UserController {
         if(removeCnt > 0){
             return ResponseEntity.ok("사용자 정보가 삭제되었습니다.");
         } else {
-            return ResponseEntity.status(404).body("사용자 정보가 없습니다.");
+            return ResponseEntity.status(404).body("사용자 정보 삭제에 실패했습니다.");
         }
     }
 
@@ -74,9 +74,5 @@ public class UserController {
         return userService.findDataByKeyWord(id, name);
     }
 
-    // test s3
-    @GetMapping("/s3")
-    public void listBuckets(){
-        awsS3Service.listBucketObjects();
-    }
+
 }
