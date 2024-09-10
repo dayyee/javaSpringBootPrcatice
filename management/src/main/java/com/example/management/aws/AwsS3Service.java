@@ -47,14 +47,8 @@ public class AwsS3Service {
             ListObjectsResponse res = s3Client.listObjects(listObjects);
             List<S3Object> objects = res.contents();
             System.out.println("objects" + objects);
-            List<FileDTO> result = convertS3ObjectsToFileDTO(objects);
-            if(result.isEmpty()){
-                return new ArrayList<>();
-            }
-            return result;
+            return convertS3ObjectsToFileDTO(objects);
 
-//
-//
 //            for (S3Object myValue : objects) {
 //                System.out.print("\n The name of the key is " + myValue.key()); // 제목
 //                System.out.print("\n The object is " + calKb(myValue.size()) + " KBs"); // 크기

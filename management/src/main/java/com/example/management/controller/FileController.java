@@ -29,7 +29,7 @@ public class FileController {
 
     // file upload
     @PostMapping("/upload")
-    public ResponseEntity<String> putData(@RequestBody UploadRequestDTO uploadReq){
+    public ResponseEntity<String> uploadFile(@RequestBody UploadRequestDTO uploadReq){
         String fileTitle= uploadReq.getFileTitle();
         List<UserDTO> userList = uploadReq.getUserList();
         Integer result = awsS3Service.uploadListTos3Object(fileTitle, userList);
