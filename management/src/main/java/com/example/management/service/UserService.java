@@ -4,15 +4,16 @@ import com.example.management.UserMapper;
 import com.example.management.aws.AwsSqsService;
 import com.example.management.model.SubjectDTO;
 import com.example.management.model.UserDTO;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 import software.amazon.eventstream.MessageBuilder;
 
 import java.util.List;
-
 @Service
 public class UserService {
     // aws SQS, SNS 등록해서 호출하기

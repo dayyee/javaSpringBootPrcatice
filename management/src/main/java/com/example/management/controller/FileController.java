@@ -4,6 +4,7 @@ import com.example.management.aws.AwsS3Service;
 import com.example.management.model.FileDTO;
 import com.example.management.model.UploadRequestDTO;
 import com.example.management.model.UserDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.s3.model.ListBucketsResponse;

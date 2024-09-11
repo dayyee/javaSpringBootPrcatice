@@ -6,6 +6,7 @@ import com.example.management.aws.AwsSqsService;
 import com.example.management.model.SubjectDTO;
 import com.example.management.model.UserDTO;
 import com.example.management.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,7 @@ public class UserController {
 
     // id로 사용자 수정
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUserById(@PathVariable("id") Integer id, @RequestBody UserDTO formData) {
+    public ResponseEntity<String> updateUserById(@PathVariable("id") Integer id, @Valid @RequestBody UserDTO formData) {
         Integer updateCnt = userService.updateUserById(formData);
         if (updateCnt > 0) {
             return ResponseEntity.ok("사용자 정보가 수정되었습니다.");
