@@ -15,7 +15,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 import java.util.List;
 
-@CrossOrigin(origins="http://localhost:8090")
+@CrossOrigin(origins="http://project1-usermng.p-e.kr")
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @RestController
